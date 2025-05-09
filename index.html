@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body onload="nextQuestion()">
+    
+    <div class="first">
+<div>
+    <h1>Simple Quiz</h1>
+</div>
+ 
+<div>
+    <h2 id="timer">1:00</h2>
+</div>
+
+<br><br>
+
+
+<div>
+    <p id="question" ></p>
+    
+</div>
+
+<div>
+    <input type="radio" name="option" value="1" onclick="clicked()">
+    <label for="" id="opt1"></label><br>
+    <input type="radio" name="option" value="2" onclick="clicked()">
+    <label for="" id="opt2"></label><br>
+    <input type="radio" name="option" value="3" onclick="clicked()">
+    <label for="" id="opt3"></label><br><br>
+
+    <button disabled id="btn" onclick="nextQuestion()">Next</button>
+
+</div>
+
+
+
+
+</div>
+
+<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>
