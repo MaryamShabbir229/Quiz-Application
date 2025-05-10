@@ -1,3 +1,16 @@
+ var firebaseConfig = {
+  apiKey: "AIzaSyAIF1_b49VJxi0K3rSf89-utTKfq35h9oU",
+  authDomain: "quiz-application-e39fc.firebaseapp.com",
+  databaseURL: "https://quiz-application-e39fc-default-rtdb.firebaseio.com",
+  projectId: "quiz-application-e39fc",
+  storageBucket: "quiz-application-e39fc.firebasestorage.app",
+  messagingSenderId: "561661085457",
+  appId: "1:561661085457:web:da419682692d3d9a502eb0"
+};
+
+  // Initialize Firebase
+  var app = firebase.initializeApp(firebaseConfig);
+
 var questions = [
     {
       question: "HTML Stands for",
@@ -99,9 +112,14 @@ var questions = [
    
   } , 1000)
 
+  var answers = [];
+
   function nextQuestion(){
     var nextBtn = document.getElementById("btn");
-    var allOptions = document.getElementsByTagName("input")
+    var allOptions = document.getElementsByTagName("input");
+
+
+   
 
     for(var i = 0; i < allOptions.length ; i++){
         if(allOptions[i].checked){
@@ -110,11 +128,20 @@ var questions = [
             var selectedOption = questions[index - 1][`option${selectedValue}`]
             var selectedValue = questions[index-1]["corrAnswer"]
 
+            answers.push({
+              question : ques.innerText,
+              selectedOption : selectedOption,
+              correctAnswer : selectedValue,
+            })
+
             if(selectedOption === selectedValue ){
                 score++
             }
         }
-    }
+    } 
+
+    
+
 
    
     var nextBtn = document.getElementById("btn");
@@ -126,15 +153,34 @@ var questions = [
     if(index > questions.length - 1){
         var percentage =((score / questions.length) * 100).toFixed(2);
 
-  Swal.fire({
-    title: 'Quiz Result',
-    text: `You scored ${percentage}%`,
-    icon: 'success',
-    confirmButtonText: 'OK',
-    customClass: {
-    confirmButton: 'my-ok-button'
-  }
-  });
+          var resultData = {
+      score: score,
+      totalQuestions: questions.length,
+      percentage: percentage,
+       answers: answers,
+       
+    };
+
+        firebase.database().ref('quizResults').push(resultData).then(() => {
+      Swal.fire({
+        title: 'Quiz Result',
+        text: `You scored ${percentage}%`,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'my-ok-button',
+        },
+      });
+    }).catch((error) => {
+      console.error("Error saving result: ", error);
+      Swal.fire({
+        title: 'Error',
+        text: 'There was an error saving your result.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    });
+
 
     }else{
         ques.innerText = questions[index].question;
